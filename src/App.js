@@ -34,7 +34,7 @@ class App extends Component {
     });
   }
 
-  handleClick (i) {
+  handleClick = (i) => {
     let todosList = this.state.todos.slice();
     todosList[i].completed = !todosList[i].completed;
     this.setState({
@@ -42,11 +42,23 @@ class App extends Component {
     })
   }
 
+  handleDelete = (index) => {
+    let _todos = this.state.todos.slice();
+    _todos.splice(index, 1);
+    this.setState({
+      todos: _todos
+    });
+  }
+
   render () {
     return (
       <section className="todoapp">
         <Header name={this.state.name} handleInput={this.handleInput} />
-        <Main todos={this.state.todos} onClick={i => this.handleClick(i)} />
+        <Main
+          todos={this.state.todos}
+          onToggle={i => this.handleClick(i)}
+          onDelete={i => this.handleDelete(i)} 
+        />
         <Footer todos={this.state.todos}/>
       </section>
     );

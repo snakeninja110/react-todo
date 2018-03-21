@@ -9,9 +9,9 @@ export default class Main extends Component {
       return (
         <li className={item.completed ? "completed" : ""} key={index}>
           <div className="view">
-            <input className="toggle" type="checkbox" defaultChecked={item.completed} onClick={() => this.props.onClick(index)}/>
+            <input className="toggle" type="checkbox" defaultChecked={item.completed} onClick={() => this.props.onToggle(index)}/>
             <label>{item.title}</label>
-            <button className="destroy"></button>
+            <button className="destroy" onClick={() => this.props.onDelete(index)}></button>
           </div>
           <input className="edit" defaultValue={item.title}/>
         </li>
