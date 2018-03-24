@@ -1,29 +1,30 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import Item from './item';
 
 export default class Main extends Component {
 
-  render() {
+  toggleAll = (event) => {
+    const checked = event.target.checked;
+    this.props.toggleAll(checked);
+  }
+
+  render () {
     const todos = this.props.todos;
     const ifShow = !todos.length ? 'main hidden' : 'main ';
-    const item = todos.map((item, index) => {
-      return (
-        <li className={item.completed ? "completed" : ""} key={index}>
-          <div className="view">
-            <input className="toggle" type="checkbox" defaultChecked={item.completed} onClick={() => this.props.onToggle(index)}/>
-            <label>{item.title}</label>
-            <button className="destroy" onClick={() => this.props.onDelete(index)}></button>
-          </div>
-          <input className="edit" defaultValue={item.title}/>
-        </li>
-      );
-    });
 
     return (
       <section className={ifShow} >
-        <input className="toggle-all" type="checkbox" />
-        <ul className="todo-list">
-          {item}
-        </ul>
+        <input
+          className="toggle-all"
+          type="checkbox"
+          onChange={this.toggleAll}
+          checked={this.props.count === 0}
+        />
+        <Item
+          todos={this.props.todos}
+          onDelete={this.props.onDelete}
+          onToggle={this.props.onToggle}
+        />
       </section>
     )
   }

@@ -2,97 +2,72 @@ import React, { Component } from 'react';
 import Header from './components/Header';
 import Main from './components/Main';
 import Footer from './components/Footer';
+import { addTodo, toggleTodo, deleteFromTodo, toggleAll } from './common/todo';
+import Toolkit from './common/util';
 import './App.css';
+
+const _NAME_ = '_TODO_';
 
 class App extends Component {
   constructor () {
     super();
     this.state = {
-      name: "Todos list",
-      todos: [
-      //   {
-      //   completed: false,
-      //   title: 'finish exercise'
-      // }, {
-      //   completed: false,
-      //   title: 'lean jsx'
-      // }, {
-      //   completed: true,
-      //   title: 'lean react'
-      // }
-      ]
+      name: "Todos",
+      todos: Toolkit.util.store(_NAME_)
     };
+    this.updateTodo.bind(this);
+  }
 
+  updateTodo (todos) {
+    Toolkit.util.store(_NAME_, todos);
+    this.setState({
+      todos: todos
+    });
   }
 
   handleInput = (value) => {
-    let _todos = this.state.todos.slice();
-    _todos.unshift(createTodo(value));
+    const _todos = addTodo(this.state.todos, value);
 
-    this.setState({
-      todos: _todos
-    });
+    this.updateTodo(_todos);
   }
 
-  handleClick = (i) => {
-    let todosList = this.state.todos.slice();
-    todosList[i].completed = !todosList[i].completed;
-    this.setState({
-      todos: todosList
-    })
+  handleClick = (index) => {
+    const _todos = toggleTodo(this.state.todos, index);
+    this.updateTodo(_todos);
   }
 
   handleDelete = (index) => {
-    let _todos = this.state.todos.slice();
-    _todos.splice(index, 1);
-    this.setState({
-      todos: _todos
-    });
+    const _todos = deleteFromTodo(this.state.todos, index);
+    this.updateTodo(_todos);
+  }
+
+  toggleAll = (checked) => {
+    const _todos = toggleAll(this.state.todos, checked);
+    this.updateTodo(_todos);
   }
 
   render () {
+    const activeTodoCount = this.state.todos.reduce((accum, todo) => {
+      return todo.completed ? accum : accum + 1;
+    }, 0);
+
     return (
       <section className="todoapp">
         <Header name={this.state.name} handleInput={this.handleInput} />
         <Main
           todos={this.state.todos}
+          count={activeTodoCount}
           onToggle={i => this.handleClick(i)}
-          onDelete={i => this.handleDelete(i)} 
+          onDelete={i => this.handleDelete(i)}
+          toggleAll={this.toggleAll}
         />
-        <Footer todos={this.state.todos}/>
+        <Footer
+          todos={this.state.todos}
+          count={activeTodoCount}
+        />
       </section>
     );
   }
-}
-
-/*
-var todolist = {
-  name: "todos",
-  todos: [{
-    completed: false,
-    title: 'finish exercise'
-  }, {
-    completed: false,
-    title: 'lean jsx'
-  }, {
-    completed: true,
-    title: 'lean react'
-  }]
-}
-*/
-
-class Todo {
-  constructor ({completed, title}) {
-    this.completed = completed;
-    this.title = title;
-  }
-}
-
-export function createTodo (title) {
-  return new Todo({
-    completed: false,
-    title: title
-  })
 }
 
 export default App;
