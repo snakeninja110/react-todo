@@ -1,47 +1,84 @@
 import React, { Component } from 'react';
-import { ACTIVE_TODOS, COMPLETED_TODOS } from '../common/constants';
+
+import classNames from 'classnames';
 
 export default class Item extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      editText: this.props.todo.title
+    }
+  }
+
+  onHandleEdit (item) {
+    this.props.onEdit(item);
+    this.setState({
+      editText: this.props.todo.title
+    })
+  }
+
+  handleChange (e) {
+    const input = e.target;
+    this.setState({
+      editText: input.value
+    })
+  }
+
+  handleSubmit = (e) => {
+    const val = this.state.editText.trim();
+    if (val) {
+      this.props.onSave(val);
+    } else {
+      this.props.onDelete();
+    }
+  }
+
+  handleKeyDown (e) {
+    if (e.keyCode === 13) {
+      this.handleSubmit(e);
+    } else if (e.keyCode === 27) {
+      this.setState({
+        editText: this.props.todo.title
+      })
+      this.props.onCancel(e);
+    }
+  }
+
+  componentDidUpdate (prevProps) {
+    if (!prevProps.editing && this.props.editing) {
+      this.editField.focus();
+      this.editField.setSelectionRange(this.editField.value.length, this.editField.value.length);
+    }
+  }
+
   render () {
-    const todos = this.props.todos;
-    const nowshowing = this.props.nowShowing;
-
-    const showntodos = todos.filter((todo) => {
-      switch (nowshowing) {
-        case ACTIVE_TODOS:
-          return !todo.completed;
-        case COMPLETED_TODOS:
-          return todo.completed;
-        default:
-          return true;
-      }
-    }, this);
-
-    const item = showntodos.map((item, index) => {
-      return (
-        <li className={item.completed ? "completed" : ""} key={item.uuid}>
-          <div className="view">
-            <input
-              className="toggle"
-              type="checkbox"
-              checked={item.completed}
-              onChange={() => this.props.onToggle(index)}
-            />
-            <label>{item.title}</label>
-            <button className="destroy" onClick={() => this.props.onDelete(index)}></button>
-          </div>
-          <input
-            ref="editField"
-            className="edit"
-            defaultValue={item.title} />
-        </li>
-      );
-    });
+    const todo = this.props.todo;
 
     return (
-      <ul className="todo-list">
-        {item}
-      </ul>
+      <li
+        className={classNames({
+          completed: todo.completed,
+          editing: this.props.editing
+        })}
+        key={todo.uuid} >
+        <div className="view">
+          <input
+            className="toggle"
+            type="checkbox"
+            checked={todo.completed}
+            onChange={() => this.props.onToggle()}
+          />
+          <label onDoubleClick={() => this.onHandleEdit(todo)}>{todo.title}</label>
+          <button className="destroy" onClick={() => this.props.onDelete()}></button>
+        </div>
+        <input
+          ref={(el) => {this.editField = el}}
+          className="edit"
+          value={this.state.editText}
+          onChange={e => this.handleChange(e)}
+          onKeyDown={e => this.handleKeyDown(e)}
+        />
+      </li>
     )
   }
 }

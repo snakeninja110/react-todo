@@ -24,18 +24,24 @@ export function addTodo (todolist, value) {
   return _todos;
 }
 
+export function saveTodo(todolist, todoToSave, text) {
+  return todolist.map((todo) => {
+    return todo === todoToSave ? Object.assign({}, todo, {title: text}) : todo;
+  })
+}
+
 // 选中与否
-export function toggleTodo (todolist, index) {
-  const _todos = todolist.slice();
-  _todos[index].completed = !_todos[index].completed;
-  return _todos;
+export function toggleTodo (todolist, todoToToggle) {
+  return todolist.map((todo) => {
+    return todo === todoToToggle ? Object.assign({}, todo, {completed: !todo.completed}) : todo;
+  });
 }
 
 // 删除
-export function deleteFromTodo (todolist, index) {
-  let _todos = todolist.slice();
-  _todos.splice(index, 1);
-  return _todos;
+export function deleteFromTodo (todolist, todoToDelete) {
+  return todolist.filter((todo) => {
+    return todo !== todoToDelete;
+  });
 }
 
 export function toggleAll (todolist, checked) {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Header from './components/Header';
 import Main from './components/Main';
 import Footer from './components/Footer';
-import { addTodo, toggleTodo, deleteFromTodo, toggleAll, clearCompleted } from './common/todo';
+import { addTodo, toggleTodo, deleteFromTodo, toggleAll, clearCompleted, saveTodo } from './common/todo';
 import Toolkit from './common/util';
 import { ALL_TODOS } from './common/constants';
 
@@ -16,7 +16,8 @@ class App extends Component {
     this.state = {
       name: "Todos",
       todos: Toolkit.util.store(_NAME_),
-      nowShowing: ALL_TODOS
+      nowShowing: ALL_TODOS,
+      editing: null
     };
     this.updateTodo.bind(this);
   }
@@ -33,17 +34,17 @@ class App extends Component {
     this.updateTodo(_todos);
   }
 
-  handleClick = (index) => {
-    const _todos = toggleTodo(this.state.todos, index);
+  handleToggle = (todoToToggle) => {
+    const _todos = toggleTodo(this.state.todos, todoToToggle);
     this.updateTodo(_todos);
   }
 
-  handleDelete = (index) => {
-    const _todos = deleteFromTodo(this.state.todos, index);
+  handleDelete = (todoToDelete) => {
+    const _todos = deleteFromTodo(this.state.todos, todoToDelete);
     this.updateTodo(_todos);
   }
 
-  toggleAll = (checked) => {
+  handleToggleAll = (checked) => {
     const _todos = toggleAll(this.state.todos, checked);
     this.updateTodo(_todos);
   }
@@ -59,6 +60,26 @@ class App extends Component {
     })
   }
 
+  handleEdit = (item) => {
+    this.setState({
+      editing: item.uuid
+    })
+  }
+
+  handleCancel = () => {
+    this.setState({
+      editing: null
+    })
+  }
+
+  handleSave = (todoToSave, text) => {
+    const _todos = saveTodo(this.state.todos, todoToSave, text);
+    this.setState({
+      editing: null
+    });
+    this.updateTodo(_todos);
+  }
+
   render () {
     const activeTodoCount = this.state.todos.reduce((accum, todo) => {
       return todo.completed ? accum : accum + 1;
@@ -72,9 +93,13 @@ class App extends Component {
           todos={this.state.todos}
           count={activeTodoCount}
           nowShowing={this.state.nowShowing}
-          onToggle={i => this.handleClick(i)}
+          editing={this.state.editing}
+          onToggle={i => this.handleToggle(i)}
           onDelete={i => this.handleDelete(i)}
-          toggleAll={this.toggleAll}
+          onToggleAll={this.handleToggleAll}
+          onEdit={this.handleEdit}
+          onCancel={this.handleCancel}
+          onSave={this.handleSave}
         />
         <Footer
           count={activeTodoCount}
