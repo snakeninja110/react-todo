@@ -3,12 +3,18 @@ import React, { Component } from 'react';
 export default class Header extends Component {
   constructor(props) {
     super(props);
-    this.onKeyUp = this.onKeyUp.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
-  onKeyUp(e) {
-    if (e.keyCode === 13 && this.inputText.value) {
-      this.props.handleInput(this.inputText.value);
+  handleKeyDown(e) {
+    if (e.keyCode !== 13) {
+      return;
+    }
+    e.preventDefault();
+
+    let val = this.inputText.value
+    if (val) {
+      this.props.handleInput(val);
       this.inputText.value = '';
     }
   }
@@ -20,7 +26,7 @@ export default class Header extends Component {
           <h1>{this.props.name}</h1>
           <input
             ref={(el) => { this.inputText = el }}
-            onKeyUp = {this.onKeyUp}
+            onKeyDown = {this.handleKeyDown}
             className="new-todo"
             placeholder="What needs to be done?"
           />

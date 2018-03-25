@@ -39,8 +39,13 @@ export function deleteFromTodo (todolist, index) {
 }
 
 export function toggleAll (todolist, checked) {
-  todolist = todolist.map((todo) => {
+  return todolist.map((todo) => {
     return Object.assign({}, todo, {completed: checked})
   });
-  return todolist;
+}
+
+export function clearCompleted (todolist) {
+  return todolist.filter((todo) => {
+    return !todo.completed;
+  });
 }

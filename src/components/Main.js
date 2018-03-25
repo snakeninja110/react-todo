@@ -10,22 +10,28 @@ export default class Main extends Component {
 
   render () {
     const todos = this.props.todos;
-    const ifShow = !todos.length ? 'main hidden' : 'main ';
+    const nowShowing = this.props.nowShowing;
+    let main = null;
 
-    return (
-      <section className={ifShow} >
-        <input
-          className="toggle-all"
-          type="checkbox"
-          onChange={this.toggleAll}
-          checked={this.props.count === 0}
-        />
-        <Item
-          todos={this.props.todos}
-          onDelete={this.props.onDelete}
-          onToggle={this.props.onToggle}
-        />
-      </section>
-    )
+    if (todos.length) {
+      main = (
+        <section className='main' >
+          <input
+            className="toggle-all"
+            type="checkbox"
+            onChange={this.toggleAll}
+            checked={this.props.count === 0}
+          />
+          <Item
+            todos={todos}
+            nowShowing={nowShowing}
+            onDelete={this.props.onDelete}
+            onToggle={this.props.onToggle}
+          />
+        </section>
+      )
+    }
+
+    return (main)
   }
 }
