@@ -26,6 +26,12 @@ const util = {
     var store = localStorage.getItem(namespace);
     return (store && JSON.parse(store)) || [];
   },
+  /**
+   * 清除Storage数据
+   */
+  clearStore: (namespace) => {
+    localStorage.removeItem(namespace);
+  },
   pluralize: (count, word) => {
     return count === 1 ? word : word + 's';
   }

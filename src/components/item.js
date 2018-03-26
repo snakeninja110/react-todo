@@ -77,6 +77,7 @@ export default class Item extends Component {
           value={this.state.editText}
           onChange={e => this.handleChange(e)}
           onKeyDown={e => this.handleKeyDown(e)}
+          onBlur={e => this.handleSubmit(e)}
         />
       </li>
     )

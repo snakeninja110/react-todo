@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Item from './item';
+import Item from './Item';
 import { ACTIVE_TODOS, COMPLETED_TODOS } from '../common/constants';
 
 export default class Main extends Component {

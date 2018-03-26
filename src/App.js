@@ -80,6 +80,10 @@ class App extends Component {
     this.updateTodo(_todos);
   }
 
+  componentWillUnmount () {
+    Toolkit.util.clearStore(_NAME_);
+  }
+
   render () {
     const activeTodoCount = this.state.todos.reduce((accum, todo) => {
       return todo.completed ? accum : accum + 1;
