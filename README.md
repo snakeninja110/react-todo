@@ -11,7 +11,7 @@ Header中做input提交到父组件，然后在main中接收
 
 App.js只做事件转发：
 
-```react
+```javascript
 render() {
   return (
     <section className="todoapp">
@@ -27,7 +27,7 @@ render() {
 
 Header.js：
 
-```react
+```javascript
 handleInput = (value) => {
   // 转发事件
   this.props.eventEmitter.emit('inputAdd', value);
@@ -65,7 +65,7 @@ render () {
 
 main.js：
 
-```react
+```javascript
 componentDidMount () {
   // 挂载完成后接受事件监听
   this.props.eventEmitter.on('inputAdd', (inputVal) => {
@@ -87,13 +87,13 @@ componentDidMount () {
 
 
 ### 2018.3.31 第二版本(暂时搁置)
-####  $\textcolor{Red}{ 先做事件总线模式，此优化暂时搁置} $
+*先做事件总线模式，此优化暂时搁置*
 
 上一版中我在Main.js，Footer.js中做了组件内容显示与否的判断，此时即使没有数据依然会渲染组件，并且组件不会被卸载 导致componentWillUnmount无法被触发
 
 Main.js:
 
-```react
+```javascript
 export default class Main extends Component {
 
   componentWillUnmount() {
@@ -118,7 +118,7 @@ export default class Main extends Component {
 
 改版后把判断放入App.js内，Main 和 Footer 中正常渲染组件内容，这样当没有数据时Main，Footer能被正确卸载掉
 
-```react
+```javascript
 class App extends Component {
   constructor () {
     super();
