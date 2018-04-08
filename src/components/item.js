@@ -6,12 +6,13 @@ export default class Item extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      editText: this.props.todo.title
+      editText: this.props.todo.title,
+      // editing: null
     }
   }
 
-  onHandleEdit (item) {
-    this.props.onEdit(item);
+  onHandleEdit () {
+    this.props.onEdit();
     this.setState({
       editText: this.props.todo.title
     })

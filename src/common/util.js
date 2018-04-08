@@ -32,6 +32,9 @@ const util = {
   clearStore: (namespace) => {
     localStorage.removeItem(namespace);
   },
+  /**
+   * 根据条数返回单词
+   */
   pluralize: (count, word) => {
     return count === 1 ? word : word + 's';
   }

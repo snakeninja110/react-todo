@@ -6,6 +6,10 @@ export default class Header extends Component {
     this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
+  handleInput = (value) => {
+    this.props.eventEmitter.emit('inputAdd', value);
+  }
+
   handleKeyDown(e) {
     if (e.keyCode !== 13) {
       return;
@@ -14,7 +18,7 @@ export default class Header extends Component {
 
     let val = this.inputText.value
     if (val) {
-      this.props.handleInput(val);
+      this.handleInput(val);
       this.inputText.value = '';
     }
   }
