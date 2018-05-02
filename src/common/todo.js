@@ -26,19 +26,19 @@ export function createTodo (title) {
 /**
  * 新增一条Todo
  * @param {Array} todolist
- * @param {Object} value
+ * @param {String} value
  */
 export function addTodo (todolist, value) {
-  const _todos = todolist;
+  const _todos = todolist.slice();
   _todos.unshift(createTodo(value));
   return _todos;
 }
 
 /**
  * 修改Todo的title
- * @param {Array} todolist 
- * @param {Object} todoToSave 
- * @param {String} text 
+ * @param {Array} todolist
+ * @param {Object} todoToSave
+ * @param {String} text
  */
 export function saveTodo(todolist, todoToSave, text) {
   return todolist.map((todo) => {
@@ -48,8 +48,8 @@ export function saveTodo(todolist, todoToSave, text) {
 
 /**
  * 选中与否（是否标记完成）
- * @param {Array} todolist 
- * @param {Object} todoToToggle 
+ * @param {Array} todolist
+ * @param {Object} todoToToggle
  */
 export function toggleTodo (todolist, todoToToggle) {
   return todolist.map((todo) => {
@@ -59,8 +59,8 @@ export function toggleTodo (todolist, todoToToggle) {
 
 /**
  * 删除
- * @param {Array} todolist 
- * @param {Object} todoToDelete 
+ * @param {Array} todolist
+ * @param {Object} todoToDelete
  */
 export function deleteFromTodo (todolist, todoToDelete) {
   return todolist.filter((todo) => {
@@ -70,8 +70,8 @@ export function deleteFromTodo (todolist, todoToDelete) {
 
 /**
  * 全选
- * @param {Array} todolist 
- * @param {Boolean} checked 
+ * @param {Array} todolist
+ * @param {Boolean} checked
  */
 export function toggleAll (todolist, checked) {
   return todolist.map((todo) => {
@@ -81,7 +81,7 @@ export function toggleAll (todolist, checked) {
 
 /**
  * 清除所有已完成项
- * @param {Array} todolist 
+ * @param {Array} todolist
  */
 export function clearCompleted (todolist) {
   return todolist.filter((todo) => {

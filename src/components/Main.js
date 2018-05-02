@@ -99,6 +99,9 @@ export default class Main extends Component {
   render () {
     const todos = this.state.todos;
     const nowShowing = this.state.nowShowing;
+    const activeTodoCount = this.state.todos.reduce((accum, todo) => {
+      return todo.completed ? accum : accum + 1;
+    }, 0);
     let main = null;
 
     const showntodos = todos.filter((todo) => {
@@ -119,11 +122,11 @@ export default class Main extends Component {
           todo={item}
           nowShowing={nowShowing}
           editing={this.state.editing === item.uuid}
-          onDelete={() => this.onDelete(item)}
-          onToggle={() => this.onToggle(item)}
-          onEdit={() => this.onEdit(item)}
+          deleteTodo={() => this.onDelete(item)}
+          toggleTodo={() => this.onToggle(item)}
+          editTodo={() => this.onEdit(item)}
           onCancel={this.onCancel}
-          onSave={(text) => this.onSave(item, text)}
+          saveTodo={(text) => this.onSave(item, text)}
         />
       )
     })
@@ -135,7 +138,7 @@ export default class Main extends Component {
             className="toggle-all"
             type="checkbox"
             onChange={this.onToggleAll}
-            checked={this.props.count === 0}
+            checked={activeTodoCount === 0}
           />
           <ul className="todo-list">
             {items}

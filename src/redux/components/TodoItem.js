@@ -7,14 +7,14 @@ export default class Item extends Component {
     super(props);
     this.state = {
       editText: this.props.todo.title,
-      // editing: null
+      editing: false
     }
   }
 
   onHandleEdit () {
-    this.props.editTodo();
     this.setState({
-      editText: this.props.todo.title
+      editText: this.props.todo.title,
+      editing: true
     })
   }
 
@@ -25,13 +25,14 @@ export default class Item extends Component {
     })
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = () => {
     const val = this.state.editText.trim();
     if (val) {
-      this.props.saveTodo(val);
+      this.props.saveTodo(this.props.todo, val);
     } else {
       this.props.deleteTodo(this.props.todo);
     }
+    this.onCancel();
   }
 
   handleKeyDown (e) {
@@ -41,25 +42,31 @@ export default class Item extends Component {
       this.setState({
         editText: this.props.todo.title
       })
-      this.props.onCancel(e);
+      this.onCancel();
     }
   }
 
+  onCancel = () => {
+    this.setState({
+      editing: false
+    })
+  }
+
   componentDidUpdate (prevProps) {
-    if (!prevProps.editing && this.props.editing) {
+    if (!prevProps.editing && this.state.editing) {
       this.editField.focus();
       this.editField.setSelectionRange(this.editField.value.length, this.editField.value.length);
     }
   }
 
   render () {
-    const { todo, editing, toggleTodo, deleteTodo} = this.props;
+    const { todo, toggleTodo, deleteTodo} = this.props;
 
     return (
       <li
         className={classNames({
           completed: todo.completed,
-          editing
+          editing: this.state.editing
         })}
         key={todo.uuid} >
         <div className="view">

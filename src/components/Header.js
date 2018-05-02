@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export default class Header extends Component {
+class Header extends Component {
   constructor(props) {
     super(props);
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -39,3 +39,5 @@ export default class Header extends Component {
     )
   }
 }
+
+export default Header;
